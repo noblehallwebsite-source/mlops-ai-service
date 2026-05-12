@@ -22,7 +22,7 @@ jobs:
         script: |
 
           if [ ! -d ~/frontend-project ]; then
-            git clone https://git@github.com:noblehallwebsite-source/mlops-ai-service.git ~/frontend-project
+            git clone  https://github.com/noblehallwebsite-source/mlops-ai-service.git  ~/frontend-project
           fi
 
           cd ~/frontend-project
