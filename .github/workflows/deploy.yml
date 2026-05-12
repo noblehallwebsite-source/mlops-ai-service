@@ -1,4 +1,4 @@
-name: Deploy AI Service
+name: Deploy Frontend
 
 on:
   push:
@@ -20,16 +20,22 @@ jobs:
         username: ${{ secrets.AIOPS_USER }}
         key: ${{ secrets.AIOPS_SSH_KEY }}
         script: |
-          cd ~/mlops-ai-service
 
-          git pull origin main
+          if [ ! -d ~/frontend-project ]; then
+            git clone https://git@github.com:noblehallwebsite-source/mlops-ai-service.git ~/frontend-project
+          fi
 
-          docker build -t mlops-ai-service .
+          cd ~/frontend-project
 
-          docker stop ai-service || true
-          docker rm ai-service || true
+          git fetch origin
+          git reset --hard origin/main
+
+          docker build -t frontend-app .
+
+          docker stop frontend || true
+          docker rm frontend || true
 
           docker run -d \
-            --name ai-service \
-            -p 127.0.0.1:8000:8000 \
-            mlops-ai-service
+            --name frontend \
+            -p 127.0.0.1:3000:80 \
+            frontend-app
